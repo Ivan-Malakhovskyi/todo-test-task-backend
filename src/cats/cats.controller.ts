@@ -9,13 +9,16 @@ import {
   Req,
 } from '@nestjs/common';
 import { CreateCatDto } from '../dto/create-cats.dto';
+import { CatsService } from './cats.service';
+import { Cat } from 'src/interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {}
+
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    console.log(createCatDto);
-    return 'Here will be create action';
+    this.catsService.create(createCatDto);
   }
 
   @Get()
@@ -26,13 +29,18 @@ export class CatsController {
     return 'All cats';
   }
 
-  @Get()
+  @Get('any')
   async findAll(
     @Query('age') age: number,
     @Query('breed') breed: string,
   ): Promise<object[]> {
     console.log(age, breed);
     return [];
+  }
+
+  @Get()
+  async findAllCats(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   @Get(':catId')
