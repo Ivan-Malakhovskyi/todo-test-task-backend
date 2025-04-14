@@ -8,26 +8,29 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { CreateCatDto } from '../dto/create-cats.dto';
 import { CatsService } from './cats.service';
-import { Cat } from 'src/interfaces/cat.interface';
+// import { Cat } from 'src/interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
-  @Post()
-  async create(@Body() createCatDto: CreateCatDto) {
-    this.catsService.create(createCatDto);
-  }
-
   @Get()
-  @HttpCode(200)
-  getAll(@Req() request: Request): string {
-    console.log(request);
-
+  getAll() {
     return 'All cats';
   }
+  // @Post()
+  // async create(@Body() createCatDto: CreateCatDto) {
+  //   this.catsService.create(createCatDto);
+  // }
+
+  // @Get()
+  // @HttpCode(200)
+  // getAll(@Req() request: Request): string {
+  //   console.log(request);
+
+  //   return 'All cats';
+  // }
 
   @Get('any')
   async findAll(
@@ -38,14 +41,14 @@ export class CatsController {
     return [];
   }
 
-  @Get()
-  async findAllCats(): Promise<Cat[]> {
-    return this.catsService.findAll();
-  }
+  // @Get()
+  // async findAllCats(): Promise<Cat[]> {
+  //   return this.catsService.findAll();
+  // }
 
-  @Get(':catId')
-  findById(@Param() params: any): string {
-    console.log(params.catId);
-    return `I should will cat with id #${params.catId}`;
-  }
+  // @Get(':catId')
+  // findById(@Param() params: any): string {
+  //   console.log(params.catId);
+  //   return `I should will cat with id #${params.catId}`;
+  // }
 }
