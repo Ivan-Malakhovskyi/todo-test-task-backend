@@ -6,6 +6,7 @@ import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { SongsController } from './songs/songs.controller';
 import { DevConfigService } from './providers/DevConfigService';
+import { PhotoModule } from './playlist/playlist.module';
 
 const devConfig = {
   port: 3000,
@@ -20,6 +21,7 @@ const prodConfig = {
   controllers: [AppController],
   providers: [
     AppService,
+    PhotoModule,
     {
       provide: DevConfigService,
       useClass: DevConfigService,
