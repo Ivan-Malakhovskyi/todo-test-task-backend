@@ -11,6 +11,7 @@ export class SongsService {
   }
 
   findAll() {
+    // throw new Error('Invoke Error exeption');
     return this.songs;
   }
 }

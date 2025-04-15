@@ -1,18 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDateString,
   IsMilitaryTime,
   IsNotEmpty,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateSongDTO {
   @IsString()
   @IsNotEmpty()
   readonly title: string;
-  @IsNotEmpty()
-  //   @IsArray()
-  @IsString()
+  @ArrayNotEmpty()
+  @IsArray()
+  @IsString({ each: true })
+  @MaxLength(30, { each: true })
   readonly artists: string[];
   @IsNotEmpty()
   @IsDateString()
