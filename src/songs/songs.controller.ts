@@ -10,12 +10,13 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Scope,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song.dto';
 import { Connection } from 'src/common/constants/connection';
 
-@Controller('songs')
+@Controller({ path: 'songs', scope: Scope.REQUEST })
 export class SongsController {
   //! with private can use songsService in methods this class
   constructor(
