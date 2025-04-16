@@ -14,6 +14,8 @@ import {
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song.dto';
 import { Connection } from 'src/common/constants/connection';
+import { Song } from './song.entity';
+import { DeleteResult } from 'typeorm';
 
 @Controller('songs')
 export class SongsController {
@@ -27,7 +29,7 @@ export class SongsController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Song[]> {
     try {
       return this.songsService.findAll();
     } catch (error) {
@@ -47,12 +49,12 @@ export class SongsController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     songId: number,
-  ) {
-    return `Type of the parameter will be ${typeof songId}`;
+  ): Promise<Song> {
+    return this.songsService.findById(songId);
   }
 
   @Post()
-  create(@Body() newSongDTO: CreateSongDTO) {
+  create(@Body() newSongDTO: CreateSongDTO): Promise<Song> {
     return this.songsService.create(newSongDTO);
   }
 
@@ -62,7 +64,13 @@ export class SongsController {
   }
 
   @Delete(':songId')
-  deleteById() {
-    return 'Delete song by id';
+  deleteById(
+    @Param(
+      'songId',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    songId: number,
+  ): Promise<DeleteResult> {
+    return this.songsService.deleteById(songId);
   }
 }

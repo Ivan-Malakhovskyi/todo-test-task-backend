@@ -1,17 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { DeleteResult, Repository } from 'typeorm';
+import { Song } from './song.entity';
+import { CreateSongDTO } from './dto/create-song.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SongsService {
-  private readonly songs = [] as object[];
+  constructor(
+    @InjectRepository(Song) private songsRepository: Repository<Song>,
+  ) {}
 
-  create(song: object) {
-    this.songs.push(...this.songs, { id: Date.now(), ...song });
+  create(songDTO: CreateSongDTO): Promise<Song> {
+    const song = new Song();
 
-    return this.songs;
+    song.title = songDTO.title;
+    song.artists = songDTO.artists;
+    song.duration = songDTO.duration;
+    song.releasedDate = songDTO.releasedDate;
+    song.lyrics = songDTO.lyrics;
+
+    return this.songsRepository.save(song);
   }
 
-  findAll() {
-    // throw new Error('Invoke Error exeption');
-    return this.songs;
+  findAll(): Promise<Song[]> {
+    return this.songsRepository.find();
+  }
+
+  async findById(id: number): Promise<Song> {
+    const song = await this.songsRepository.findOneBy({ id });
+
+    if (!song) {
+      throw new NotFoundException(`Song with id ${id} not found`);
+    }
+
+    return song;
+  }
+
+  deleteById(id: number): Promise<DeleteResult> {
+    return this.songsRepository.delete({ id });
   }
 }

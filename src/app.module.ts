@@ -7,6 +7,9 @@ import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { SongsController } from './songs/songs.controller';
 import { DevConfigService } from './providers/DevConfigService';
 import { PhotoModule } from './playlist/playlist.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { Song } from './songs/song.entity';
 
 const devConfig = {
   port: 3000,
@@ -17,7 +20,20 @@ const prodConfig = {
 };
 
 @Module({
-  imports: [CatsModule, SongsModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mariadb',
+      database: 'spotify-clone',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      entities: [Song],
+      synchronize: true,
+    }),
+    CatsModule,
+    SongsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
@@ -35,6 +51,10 @@ const prodConfig = {
   ],
 })
 export class AppModule implements NestModule {
+  constructor(dataSource: DataSource) {
+    console.log('Connect to DB with name', dataSource.driver.database);
+  }
+
   configure(consumer: MiddlewareConsumer) {
     //* consumer.apply(LoggerMiddleware).forRoutes('songs'); first USAGE
     //* consumer
