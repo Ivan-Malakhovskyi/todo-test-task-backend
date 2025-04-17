@@ -11,11 +11,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { Connection } from 'src/common/constants/connection';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song.dto';
-import { Connection } from 'src/common/constants/connection';
 import { Song } from './song.entity';
-import { DeleteResult } from 'typeorm';
+import { UpdateSongDTO } from './dto/update-song-dto';
 
 @Controller('songs')
 export class SongsController {
@@ -59,8 +60,12 @@ export class SongsController {
   }
 
   @Patch(':songId')
-  update() {
-    return 'update song by id';
+  update(
+    @Param('songId', ParseIntPipe)
+    songId: number,
+    @Body() updateSongDTO: UpdateSongDTO,
+  ): Promise<UpdateResult> {
+    return this.songsService.update(songId, updateSongDTO);
   }
 
   @Delete(':songId')
