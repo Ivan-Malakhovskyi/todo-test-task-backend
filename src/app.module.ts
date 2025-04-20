@@ -10,6 +10,8 @@ import { PhotoModule } from './playlist/playlist.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Song } from './songs/song.entity';
+import { User } from './users/user.entity';
+import { Artist } from './artists/artist.entity';
 
 const devConfig = {
   port: 3000,
@@ -28,12 +30,13 @@ const prodConfig = {
       port: 3306,
       username: 'root',
       password: '',
-      entities: [Song],
+      entities: [Song, Artist, User],
       synchronize: true,
     }),
     CatsModule,
     SongsModule,
   ],
+
   controllers: [AppController],
   providers: [
     AppService,

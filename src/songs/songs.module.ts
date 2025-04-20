@@ -4,9 +4,10 @@ import { connection } from 'src/common/constants/connection';
 import { SongsController } from './songs.controller';
 import { SongsService } from './songs.service';
 import { Song } from './song.entity';
+import { Artist } from 'src/artists/artist.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Song])],
+  imports: [TypeOrmModule.forFeature([Song, Artist])],
   controllers: [SongsController],
   providers: [
     SongsService,

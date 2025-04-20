@@ -4,9 +4,9 @@ import {
   IsDateString,
   IsMilitaryTime,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
-  MaxLength,
 } from 'class-validator';
 
 export class CreateSongDTO {
@@ -16,8 +16,7 @@ export class CreateSongDTO {
 
   @ArrayNotEmpty()
   @IsArray()
-  @IsString({ each: true })
-  @MaxLength(30, { each: true })
+  @IsNumber({}, { each: true })
   readonly artists: string[];
 
   @IsNotEmpty()
