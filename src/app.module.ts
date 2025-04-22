@@ -1,17 +1,21 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+
+import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
+import { DevConfigService } from './providers/DevConfigService';
+
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { CatsModule } from './cats/cats.module';
 import { SongsModule } from './songs/songs.module';
-import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { SongsController } from './songs/songs.controller';
-import { DevConfigService } from './providers/DevConfigService';
 import { PhotoModule } from './playlist/playlist.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { Song } from './songs/song.entity';
 import { User } from './users/user.entity';
 import { Artist } from './artists/artist.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 const devConfig = {
   port: 3000,
@@ -35,6 +39,8 @@ const prodConfig = {
     }),
     CatsModule,
     SongsModule,
+    AuthModule,
+    UsersModule,
   ],
 
   controllers: [AppController],

@@ -27,8 +27,11 @@ export class SongsService {
     song.releasedDate = songDTO.releasedDate;
     song.lyrics = songDTO.lyrics;
 
+    console.log('REQ BODY', songDTO.artists);
+
     const artists = await this.artistRepository.findByIds(songDTO.artists);
     song.artists = artists;
+    console.log('artists ', artists);
 
     return this.songsRepository.save(song);
   }
