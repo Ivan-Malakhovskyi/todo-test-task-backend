@@ -19,22 +19,3 @@ export class User {
   @Exclude()
   password: string;
 }
-
-@Entity('users')
-export class User2 {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column({ unique: true })
-  email: string;
-
-  @Column()
-  @Exclude()
-  password?: string;
-}

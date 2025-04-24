@@ -1,5 +1,5 @@
 import { Song } from 'src/songs/song.entity';
-import { User2 } from 'src/users/user.entity';
+import { User } from 'src/users/user.entity';
 import {
   Entity,
   JoinColumn,
@@ -13,9 +13,9 @@ export class Artist {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User2)
+  @OneToOne(() => User)
   @JoinColumn()
-  user: User2;
+  user: User;
 
   @ManyToMany(() => Song, (song) => song.artists, { cascade: true })
   songs: Song[];

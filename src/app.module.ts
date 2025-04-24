@@ -12,7 +12,7 @@ import { SongsModule } from './songs/songs.module';
 import { SongsController } from './songs/songs.controller';
 import { PhotoModule } from './playlist/playlist.module';
 import { Song } from './songs/song.entity';
-import { User, User2 } from './users/user.entity';
+import { User } from './users/user.entity';
 import { Artist } from './artists/artist.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -34,7 +34,7 @@ const prodConfig = {
       port: 3306,
       username: 'root',
       password: '',
-      entities: [Song, Artist, User, User2],
+      entities: [Song, Artist, User],
       synchronize: true,
     }),
     CatsModule,
