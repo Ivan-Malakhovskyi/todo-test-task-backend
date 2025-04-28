@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 
 import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { DevConfigService } from './providers/DevConfigService';
+import 'dotenv/config';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -16,6 +17,7 @@ import { User } from './users/user.entity';
 import { Artist } from './artists/artist.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ArtistsModule } from './artists/artists.module';
 
 const devConfig = {
   port: 3000,
@@ -41,6 +43,7 @@ const prodConfig = {
     SongsModule,
     AuthModule,
     UsersModule,
+    ArtistsModule,
   ],
 
   controllers: [AppController],

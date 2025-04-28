@@ -12,18 +12,22 @@ import {
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { Pagination } from 'nestjs-typeorm-paginate';
+
 import { Connection } from 'src/common/constants/connection';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song.dto';
 import { Song } from './song.entity';
 import { UpdateSongDTO } from './dto/update-song-dto';
-import { Pagination } from 'nestjs-typeorm-paginate';
+import { JwtAuthGuard } from 'src/auth/jwt-guard';
 
 @Controller('songs')
 export class SongsController {
-  //! with private can use songsService in methods this class
+  //! with private can use songsService in methods this class only
   constructor(
     private songsService: SongsService,
     @Inject('CONNECTION')
@@ -64,7 +68,10 @@ export class SongsController {
   }
 
   @Post()
-  create(@Body() newSongDTO: CreateSongDTO): Promise<Song> {
+  @UseGuards(JwtAuthGuard)
+  create(@Body() newSongDTO: CreateSongDTO, @Request() request): Promise<Song> {
+    console.log('USER', request.user);
+
     return this.songsService.create(newSongDTO);
   }
 
