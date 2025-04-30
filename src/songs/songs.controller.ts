@@ -24,6 +24,7 @@ import { CreateSongDTO } from './dto/create-song.dto';
 import { Song } from './song.entity';
 import { UpdateSongDTO } from './dto/update-song-dto';
 import { JwtAuthGuard } from 'src/auth/jwt-guard';
+import { RequestUser } from 'src/users/types';
 
 @Controller('songs')
 export class SongsController {
@@ -69,7 +70,10 @@ export class SongsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() newSongDTO: CreateSongDTO, @Request() request): Promise<Song> {
+  create(
+    @Body() newSongDTO: CreateSongDTO,
+    @Request() request: { user: RequestUser },
+  ): Promise<Song> {
     console.log('USER', request.user);
 
     return this.songsService.create(newSongDTO);
