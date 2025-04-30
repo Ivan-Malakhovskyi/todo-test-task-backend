@@ -31,7 +31,11 @@ export class AuthController {
 
   @Post('signin')
   @HttpCode(200)
-  signin(@Body() loginDTO: LoginUserDTO): Promise<{ accessToken: string }> {
+  signin(
+    @Body() loginDTO: LoginUserDTO,
+  ): Promise<
+    { accessToken: string } | { validate2FA: string; message: string }
+  > {
     return this.authService.login(loginDTO);
   }
 
