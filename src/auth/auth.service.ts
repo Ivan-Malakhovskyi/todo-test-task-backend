@@ -15,7 +15,11 @@ export class AuthService {
     private jwtService: JwtService,
     private artistsService: ArtistsService,
   ) {}
-  async login(loginDTO: LoginUserDTO): Promise<{ accessToken: string }> {
+  async login(
+    loginDTO: LoginUserDTO,
+  ): Promise<
+    { accessToken: string } | { validate2FA: string; message: string }
+  > {
     const user = await this.userService.findOne(loginDTO);
 
     const isPasswordUserMatched = await bcryptjs.compare(
@@ -38,6 +42,14 @@ export class AuthService {
 
       if (artist) {
         payload.artistId = artist.id;
+      }
+      console.log(rest);
+      if (rest.enableTwoFA && rest.twoFASecret) {
+        console.log('TRUE');
+        return {
+          validate2FA: 'http://localhost:3000/auth/validate-2fa',
+          message: 'Send your one time password from Google Auth',
+        };
       }
 
       return {
