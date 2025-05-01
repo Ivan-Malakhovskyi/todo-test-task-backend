@@ -12,12 +12,10 @@ import { CatsModule } from './cats/cats.module';
 import { SongsModule } from './songs/songs.module';
 import { SongsController } from './songs/songs.controller';
 import { PhotoModule } from './playlist/playlist.module';
-import { Song } from './songs/song.entity';
-import { User } from './users/user.entity';
-import { Artist } from './artists/artist.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ArtistsModule } from './artists/artists.module';
+import { dataSourceOptions } from 'db/data-source';
 
 const devConfig = {
   port: 3000,
@@ -29,16 +27,7 @@ const prodConfig = {
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mariadb',
-      database: 'spotify-clone',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      entities: [Song, Artist, User],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     CatsModule,
     SongsModule,
     AuthModule,

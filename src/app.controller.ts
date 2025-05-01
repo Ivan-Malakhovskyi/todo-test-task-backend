@@ -9,7 +9,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log('BEFORE CALL getHello()');
     return this.appService.getHello();
   }
 
