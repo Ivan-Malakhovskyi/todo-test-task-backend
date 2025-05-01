@@ -72,6 +72,7 @@ export class AuthController {
   getProfile(@Request() req: { user: User }) {
     const { password, ...rest } = req.user;
 
+    console.log('DELETE PASSWORD', password);
     return {
       msg: 'Auth wit API KEY',
       user: rest,
