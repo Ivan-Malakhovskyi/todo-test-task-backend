@@ -1,9 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
 import { Repository, UpdateResult } from 'typeorm';
-import { CreateUserDTO } from './dto/create-user.dto';
 import * as bcryptjs from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
+
+import { User } from './user.entity';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { LoginUserDTO } from 'src/auth/dto/login-user.dto';
 
 @Injectable()
@@ -14,20 +16,21 @@ export class UserService {
   ) {}
 
   async createUser(userDTO: CreateUserDTO): Promise<Omit<User, 'password'>> {
+    const user = new User();
+    user.firstName = userDTO.firstName;
+    user.lastName = userDTO.lastName;
+    user.email = userDTO.email;
+    user.apiKey = uuidv4();
+
     const salt = await bcryptjs.genSalt();
-    userDTO.password = await bcryptjs.hash(userDTO.password, salt);
+    user.password = await bcryptjs.hash(userDTO.password, salt);
 
-    const user = await this.userRepository.save(userDTO);
+    const savedUserInDB = await this.userRepository.save(user);
 
-    const { password, ...rest } = user;
-    console.log('dd', password);
+    const { password, ...rest } = savedUserInDB;
 
-    // delete user.password;
-    // console.log('REST', rest);
+    console.log(savedUserInDB);
 
-    console.log(user);
-
-    // return rest;
     return rest;
   }
 
@@ -65,5 +68,15 @@ export class UserService {
         twoFASecret: null,
       },
     );
+  }
+
+  async findByApiKey(apiKey: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ apiKey });
+
+    if (!user) {
+      throw new UnauthorizedException('User was not found 🥲');
+    }
+
+    return user;
   }
 }

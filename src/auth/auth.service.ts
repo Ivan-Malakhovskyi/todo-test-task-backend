@@ -7,6 +7,7 @@ import { LoginUserDTO } from 'src/auth/dto/login-user.dto';
 import { UserService } from 'src/users/users.service';
 import { Enable2FAAuth, PayloadType } from './types';
 import { UpdateResult } from 'typeorm';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -104,5 +105,9 @@ export class AuthService {
 
   async disableTwoFAAuth(userId: number): Promise<UpdateResult> {
     return this.userService.disableTwoFAAuth(userId);
+  }
+
+  async validateUserByApiKey(apiKey: string): Promise<User> {
+    return this.userService.findByApiKey(apiKey);
   }
 }

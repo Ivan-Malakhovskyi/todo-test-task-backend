@@ -24,4 +24,7 @@ export class User {
 
   @Column({ default: false, type: 'boolean' })
   enableTwoFA: boolean;
+
+  @Column({ nullable: true })
+  apiKey: string;
 }
